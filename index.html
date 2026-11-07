@@ -35,7 +35,7 @@ select.in{padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xml
 .fl{position:relative}.fl .cnt{position:absolute;right:14px;top:16px;font-size:12px;font-weight:800;color:var(--g2)}.fl .cnt.bad{color:var(--bad)}
 .seg{display:flex;gap:8px;margin-bottom:14px}.seg button{flex:1;border:1.5px solid var(--ln);border-radius:14px;padding:13px;font:inherit;font-weight:700;background:#fff;color:var(--fg);cursor:pointer}.seg button.on{background:var(--g);color:#fff;border-color:var(--g)}
 .btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;border:0;border-radius:16px;font:inherit;font-size:17px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(180deg,#e8458f,#c01a68);box-shadow:0 10px 20px -10px rgba(214,47,132,.6)}
-.btn.soft{background:linear-gradient(180deg,#ffd3e8,#ff9ac9);color:var(--gd)}
+.btn.ld:disabled{opacity:1;cursor:progress}.btn.ld{position:relative;overflow:hidden;background:#f6c9de;color:#fff;text-shadow:0 1px 2px rgba(120,0,60,.55)}.btn.ld .fl{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(180deg,#e8458f,#c01a68);transition:width .25s}.btn.ld span{position:relative;z-index:1}.btn.soft{background:linear-gradient(180deg,#ffd3e8,#ff9ac9);color:var(--gd)}
 .btn.o{background:#fff;border:1.5px solid var(--ln);color:var(--fg);box-shadow:none}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .foot{padding:12px 18px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(251,245,248,0),var(--bg) 28%);position:sticky;bottom:0}
@@ -185,7 +185,7 @@ function vPeriksa(){
   h+='<div class="sum"><span>Nama</span><b>'+esc(f.nama)+'</b></div><div class="sum"><span>NIK</span><b>'+esc(rapiNik(f.nik))+'</b></div><div class="sum"><span>Tempat, tgl lahir</span><b>'+esc(f.tempat)+', '+esc(tglIndo(f.tgl))+'</b></div><div class="sum"><span>Kelamin</span><b>'+(f.kelamin==="P"?"Perempuan":"Laki-laki")+'</b></div><div class="sum"><span>Nama ibu</span><b>'+esc(f.ibu)+'</b></div><div class="sum"><span>Nomor HP</span><b>'+esc(f.hp)+'</b></div></div>';
   h+='<label class="chk"><input type="checkbox" id="setuju"'+(S.setuju?" checked":"")+'><span>Saya menyatakan data di atas benar dan setuju dipakai untuk pendaftaran BPJS Ketenagakerjaan.</span></label>';
   if(kirimErr)h+='<div class="err" role="alert">'+esc(kirimErr)+'</div>';
-  return h+'</div>'+foot('<button class="btn soft" data-act="kirim"'+(S.setuju&&!sending?"":" disabled")+'>'+(sending?"Mengirim…":"Kirim data")+'</button><button class="btn o" data-back="1" style="min-height:48px">‹ Perbaiki</button>');
+  return h+'</div>'+foot((sending?'<button class="btn ld" id="kirimBtn" disabled><div class="fl" style="width:'+pct+'%"></div><span id="kirimTx">Mengirim… '+pct+'%</span></button><div class="mut" style="text-align:center;font-size:13px;margin-top:8px">Jangan tutup halaman ini sampai muncul nomor tanda terima.</div><button class="btn o" disabled style="min-height:48px;opacity:.5">‹ Perbaiki</button>':'<button class="btn'+(S.setuju?'':' soft')+'" data-act="kirim"'+(S.setuju?"":" disabled")+'>Kirim data</button><button class="btn o" data-back="1" style="min-height:48px">‹ Perbaiki</button>'));
 }
 function vSelesai(){
   var r=S.hasil||{};
@@ -212,17 +212,21 @@ function cek(){
 }
 
 /* ---------- aksi ---------- */
+var pct=0,pctT=null;
+function setPct(){var p=Math.min(100,Math.floor(pct)),t=document.getElementById("kirimTx"),b=document.getElementById("kirimBtn");if(t)t.textContent=(p>=100?"Terkirim 100% ✓":"Mengirim… "+p+"%");if(b){var f=b.querySelector(".fl");if(f)f.style.width=p+"%"}}
 function kirim(){
-  if(sending)return;sending=true;kirimErr="";S._keep=true;render();
+  if(sending)return;sending=true;kirimErr="";pct=3;S._keep=true;render();
+  clearInterval(pctT);pctT=setInterval(function(){pct=pct<60?pct+4:pct<85?pct+1.5:pct<92?pct+.3:pct;setPct()},300);
   var x=S.mode==="pengganti"?S.ganti:S.pilih,lok=bacaLokal(),tok=lok&&lok.id===x?lok.token:"";
   var f=S.f;
   tanya({a:"kirim",mode:S.mode,id:x,nama:f.nama,nik:f.nik,tempat:f.tempat.trim(),tgl:f.tgl,kelamin:f.kelamin,ibu:f.ibu.trim(),hp:f.hp.replace(/\D/g,""),token:tok},30000).then(function(r){
-    sending=false;
-    if(!r||!r.ok){kirimErr=(r&&r.pesan)||"Data belum terkirim. Coba lagi.";S._keep=true;render();return}
+    clearInterval(pctT);
+    if(!r||!r.ok){sending=false;kirimErr=(r&&r.pesan)||"Data belum terkirim. Coba lagi.";S._keep=true;render();return}
+    pct=100;setPct();
     S.hasil=r;simpanLokal({id:x,mode:S.mode,token:r.token,resi:r.resi,jenis:S.jenis,kel:S.kel,pos:S.pos,f:S.f});
     if(D){var it=bykId(x);if(it)it.s=S.mode==="pengganti"?"diganti":"sudah"}
-    S.step=6;render();
-  }).catch(function(){sending=false;kirimErr="Tidak bisa terhubung. Data Anda belum terkirim. Periksa sinyal, lalu tekan Kirim lagi.";S._keep=true;render()});
+    setTimeout(function(){sending=false;S.step=6;render()},600);
+  }).catch(function(){clearInterval(pctT);sending=false;kirimErr="Tidak bisa terhubung. Data Anda belum terkirim. Periksa sinyal, lalu tekan Kirim lagi.";S._keep=true;render()});
 }
 function mulaiUbah(){
   var l=bacaLokal();if(!l)return;
@@ -267,7 +271,7 @@ app.addEventListener("change",function(ev){
   var t=ev.target;
   if(t.id==="kel"){S.kel=t.value;S.pos="";S.pilih="";S._keep=true;render()}
   else if(t.id==="pos"){S.pos=t.value;S.pilih="";S._keep=true;render()}
-  else if(t.id==="setuju"){S.setuju=t.checked;var b=document.querySelector('[data-act="kirim"]');if(b)b.disabled=!S.setuju||sending}
+  else if(t.id==="setuju"){S.setuju=t.checked;var b=document.querySelector('[data-act="kirim"]');if(b){b.disabled=!S.setuju||sending;b.classList.toggle('soft',!S.setuju)}}
   else if(t.id==="tgl"){S.f.tgl=t.value;S.tglManual=true}
 });
 app.addEventListener("input",function(ev){

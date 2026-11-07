@@ -21,7 +21,7 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-seri
 .btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:50px;padding:0 20px;border-radius:14px;border:0;font:inherit;font-size:15px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(180deg,#e8458f,#c01a68);box-shadow:0 10px 20px -12px rgba(214,47,132,.6)}
 .btn.o{background:#fff;color:var(--fg);border:1.5px solid var(--ln);box-shadow:none}
-.btn:disabled{opacity:.5;cursor:wait}
+.btn:disabled{opacity:.5;cursor:wait}.btn{white-space:nowrap}
 .tools{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
 .seg{display:flex;gap:8px}.seg button{border:1.5px solid var(--ln);border-radius:14px;padding:0 18px;min-height:46px;font:inherit;font-weight:700;background:#fff;color:var(--fg);cursor:pointer}.seg button.on{background:var(--g);color:#fff;border-color:var(--g)}
 .in{background:var(--field);border:1.5px solid var(--ln);border-radius:14px;min-height:46px;padding:0 14px;font:inherit;font-size:15px;color:var(--fg);min-width:0}
@@ -42,7 +42,7 @@ details li{margin:6px 0 0 18px;font-size:14px}details li small{color:var(--mut)}
 .msg{background:#fff;border:1px solid var(--ln);border-radius:20px;padding:30px 20px;text-align:center;margin-top:40px}.msg h2{font-size:20px;margin-bottom:6px}.msg p{color:var(--mut)}
 .spin{width:34px;height:34px;border-radius:50%;border:4px solid var(--soft);border-top-color:var(--g);animation:r .9s linear infinite;margin:0 auto 12px}@keyframes r{to{transform:rotate(360deg)}}
 .warn{background:#fff8e1;border:1px solid #f0dc9c;color:#5b4a00;border-radius:14px;padding:10px 12px;font-size:12.5px;margin-top:14px}
-@media(max-width:760px){.tw{display:none}.cards{display:block}.btns{width:100%}.btns .btn{flex:1}.head h1{font-size:19px}.k b{font-size:21px}.sp{display:none}.tools .in{flex:1;min-width:140px}}
+@media(max-width:760px){#segar{flex-basis:100%}.btns .btn{padding:0 10px}.tw{display:none}.cards{display:block}.btns{width:100%}.btns .btn{flex:1}.head h1{font-size:19px}.k b{font-size:21px}.sp{display:none}.tools .in{flex:1;min-width:140px}}
 </style>
 </head>
 <body>
@@ -54,7 +54,7 @@ details li{margin:6px 0 0 18px;font-size:14px}details li small{color:var(--mut)}
 var API=(window.BK&&window.BK.api)||"";
 var app=document.getElementById("app");
 var KODE=(location.hash.match(/[#&]k=([A-Za-z0-9]+)/)||[])[1]||"";
-var R=null,err="",jenis="Balita",fKel="",fPos="",cari="",sibuk="";
+var muat_=false,terakhir="",kabar="",R=null,err="",jenis="Balita",fKel="",fPos="",cari="",sibuk="";
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function rapi(n){return String(n).replace(/(\d{4})(?=\d)/g,"$1 ")}
 function mask(n){n=String(n);return n.slice(0,4)+"…"+n.slice(-4)}
@@ -68,8 +68,19 @@ function muat(){
   fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({a:"data",k:KODE})})
     .then(function(r){return r.json()}).then(function(r){
       if(!r||!r.ok){err=(r&&r.pesan)||"Tautan tidak berlaku.";render();return}
-      urut(r);R=r;render();
+      urut(r);R=r;terakhir=jam();render();
     }).catch(function(){err="Tidak bisa terhubung ke server. Periksa sinyal, lalu coba lagi.";render()});
+}
+function jam(){var n=new Date();return ("0"+n.getHours()).slice(-2)+"."+("0"+n.getMinutes()).slice(-2)+"."+("0"+n.getSeconds()).slice(-2)}
+function segar(){
+  if(muat_||!R)return;muat_=true;kabar="";render();
+  fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({a:"data",k:KODE})})
+    .then(function(r){return r.json()}).then(function(r){
+      muat_=false;
+      if(!r||!r.ok){kabar="Belum berhasil memperbarui. Coba lagi.";render();return}
+      var lama=R.isi.length;urut(r);R=r;terakhir=jam();
+      var b=r.isi.length-lama;kabar=b>0?"Ada "+b+" data baru masuk":(b<0?"Data berubah":"Belum ada data baru");render();
+    }).catch(function(){muat_=false;kabar="Tidak bisa terhubung. Periksa sinyal, lalu coba lagi.";render()});
 }
 function urut(r){
   var ix={};r.daftar.forEach(function(d,i){ix[d.id]=i});
@@ -93,8 +104,9 @@ function render(){
   var kels=uniq(dj.map(function(d){return d.k})),poss=uniq(dj.filter(function(d){return !fKel||d.k===fKel}).map(function(d){return d.p}));
   var rows=baris(jenis);
   var h='<div class="head"><img src="logo.png" alt=""><div><h1>Data BPJS Ketenagakerjaan</h1><small>Kader Posyandu · Kecamatan Palu Utara</small></div></div>';
-  h+='<div class="kpis"><div class="k ok"><small>Sudah mengisi</small><b>'+sudah+' <span>dari '+tot+'</span></b></div><div class="k no"><small>Belum mengisi</small><b>'+belum+'</b></div><div class="sp"></div><div class="btns"><button class="btn o" id="pdf"'+(sibuk?" disabled":"")+'>⬇ Unduh PDF</button><button class="btn" id="xls"'+(sibuk?" disabled":"")+'>⬇ Unduh Excel</button></div></div>';
+  h+='<div class="kpis"><div class="k ok"><small>Sudah mengisi</small><b>'+sudah+' <span>dari '+tot+'</span></b></div><div class="k no"><small>Belum mengisi</small><b>'+belum+'</b></div><div class="sp"></div><div class="btns"><button class="btn o" id="segar"'+(muat_?" disabled":"")+'>⟳ '+(muat_?"Memperbarui…":"Perbarui sekarang")+'</button><button class="btn o" id="pdf"'+(sibuk?" disabled":"")+'>⬇ Unduh PDF</button><button class="btn" id="xls"'+(sibuk?" disabled":"")+'>⬇ Unduh Excel</button></div></div>';
   if(sibuk)h+='<div class="foot" role="status">'+esc(sibuk)+'</div>';
+  h+='<div class="foot" role="status">'+(terakhir?'Terakhir diperbarui: '+esc(terakhir):'')+(kabar?' · <b style="color:var(--g2)">'+esc(kabar)+'</b>':'')+'</div>';
   h+='<div class="tools"><div class="seg"><button data-j="Balita" class="'+(jenis==="Balita"?"on":"")+'">Posyandu Balita</button><button data-j="Lansia" class="'+(jenis==="Lansia"?"on":"")+'">Posyandu Lansia</button></div>';
   h+='<select class="in" id="fkel" aria-label="Kelurahan"><option value="">Semua kelurahan</option>'+kels.map(function(k){return '<option'+(k===fKel?" selected":"")+'>'+esc(k)+'</option>'}).join("")+'</select>';
   h+='<select class="in" id="fpos" aria-label="Posyandu"><option value="">Semua posyandu</option>'+poss.map(function(k){return '<option'+(k===fPos?" selected":"")+'>'+esc(k)+'</option>'}).join("")+'</select>';
@@ -117,6 +129,7 @@ function render(){
 app.addEventListener("click",function(ev){
   var t=ev.target.closest("button");if(!t)return;
   if(t.dataset.j){jenis=t.dataset.j;fKel="";fPos="";render()}
+  else if(t.id==="segar")segar();
   else if(t.id==="xls")unduhExcel();
   else if(t.id==="pdf")unduhPdf();
 });
