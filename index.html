@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3d0a26">
+<meta name="robots" content="noindex,nofollow">
+<title>Pendaftaran BPJS Ketenagakerjaan Kader Posyandu</title>
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<style>
+*{box-sizing:border-box;margin:0}
+:root{--g:#d62f84;--g2:#b3175f;--gd:#3d0a26;--bg:#fbf5f8;--ln:#f0dde6;--mut:#7a5e6b;--fg:#2a1019;--bad:#d64535;--soft:#fde1ee;--field:#f8eff4}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);font-size:16px;line-height:1.4;min-height:100vh;min-height:100dvh}
+#app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative}
+@media(min-width:600px){body{background:#f1e4eb}#app{margin:24px auto;min-height:calc(100vh - 48px);border-radius:30px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(61,10,38,.45)}}
+.top{background:linear-gradient(160deg,#3d0a26,#b8185f);color:#fff;padding:calc(28px + env(safe-area-inset-top,0px)) 22px 22px;border-radius:0 0 28px 28px}
+.top .l{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.92}.top .l img{width:36px;height:auto}
+.top h1{font-size:28px;line-height:1.1;margin:16px 0 8px;font-weight:800}.top h1 em{font-style:normal;color:#ffc4df}
+.top p{font-size:14px;opacity:.92;line-height:1.45}
+.bar{background:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 12px;border-bottom:1px solid var(--ln)}
+.bar .row1{display:flex;align-items:center;gap:8px}.bar .back{border:0;background:var(--soft);color:var(--g2);width:36px;height:36px;border-radius:12px;font-size:20px;font-weight:800;cursor:pointer;flex:none}
+.bar .t{font-weight:800;font-size:19px}.bar .s{font-size:12px;color:var(--mut);margin-top:1px}
+.steps{display:flex;gap:6px;margin-top:10px}.steps i{flex:1;height:5px;border-radius:5px;background:var(--ln)}.steps i.on{background:var(--g)}
+.body{padding:16px 18px;flex:1}
+.card{background:#fff;border:1px solid var(--ln);border-radius:20px;padding:6px 14px;margin-bottom:12px;box-shadow:0 8px 20px -16px rgba(61,10,38,.35)}
+label{display:block;font-size:12.5px;font-weight:700;color:var(--mut);margin:0 0 6px}
+.in{width:100%;background:var(--field);border:1.5px solid var(--ln);border-radius:14px;min-height:50px;padding:12px 14px;font:inherit;font-size:16px;color:var(--fg);margin-bottom:14px;display:block;-webkit-appearance:none;appearance:none}
+.in:focus{outline:0;border-color:var(--g);background:#fff;box-shadow:0 0 0 4px rgba(214,47,132,.18)}
+.in[readonly]{background:#f3e6ed;font-weight:700;color:#5a3447}
+.in.bad{border-color:var(--bad);background:#fff}
+select.in{padding-right:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b3175f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.hint{font-size:12.5px;color:var(--mut);margin:-8px 0 14px}.hint.ok{color:var(--g2);font-weight:700}.hint.bad{color:var(--bad);font-weight:700}
+.fl{position:relative}.fl .cnt{position:absolute;right:14px;top:16px;font-size:12px;font-weight:800;color:var(--g2)}.fl .cnt.bad{color:var(--bad)}
+.seg{display:flex;gap:8px;margin-bottom:14px}.seg button{flex:1;border:1.5px solid var(--ln);border-radius:14px;padding:13px;font:inherit;font-weight:700;background:#fff;color:var(--fg);cursor:pointer}.seg button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:54px;border:0;border-radius:16px;font:inherit;font-size:17px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(180deg,#e8458f,#c01a68);box-shadow:0 10px 20px -10px rgba(214,47,132,.6)}
+.btn.soft{background:linear-gradient(180deg,#ffd3e8,#ff9ac9);color:var(--gd)}
+.btn.o{background:#fff;border:1.5px solid var(--ln);color:var(--fg);box-shadow:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.foot{padding:12px 18px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(251,245,248,0),var(--bg) 28%);position:sticky;bottom:0}
+.foot .btn+.btn{margin-top:10px}
+.note{display:flex;gap:10px;background:#fff8e1;border:1px solid #f0dc9c;border-radius:16px;padding:12px;font-size:12.5px;line-height:1.45;color:#5b4a00;margin-bottom:12px}
+.dash{margin:12px 0;background:#fff;border:1.5px dashed var(--g);border-radius:14px;padding:10px 12px;font-size:12.5px;color:#7a1646;font-weight:700}
+.rib{background:var(--soft);border:1px solid #f3b8d6;color:#8a1348;border-radius:14px;padding:9px 12px;font-size:12.5px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rib button{border:0;background:none;color:#8a1348;font:inherit;font-weight:800;text-decoration:underline;cursor:pointer}
+.row{display:flex;gap:12px;align-items:center;padding:13px 4px;border-bottom:1px solid var(--ln);cursor:pointer;min-height:50px}.row:last-child{border:0}
+.row.dis{opacity:.5;cursor:not-allowed}
+.rd{width:22px;height:22px;border-radius:50%;border:2px solid #d3b9c7;flex:none}.row.on .rd{border-color:var(--g);background:radial-gradient(var(--g) 45%,#fff 50%)}
+.row .nm{flex:1}.row.on .nm{font-weight:700}.row.ada .nm{color:var(--g2);font-weight:800}
+.chip{font-size:11.5px;font-weight:800;border-radius:20px;padding:3px 10px;background:#eee;color:#666;white-space:nowrap}
+.opt{border:1.5px solid var(--ln);background:#fff;border-radius:18px;padding:18px;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;cursor:pointer}
+.opt.on{border-color:var(--g);background:#fff1f7;box-shadow:0 0 0 4px rgba(214,47,132,.14)}
+.opt .rd{margin-top:2px}.opt.on .rd{border-color:var(--g);background:radial-gradient(var(--g) 45%,#fff 50%)}
+.opt .ic{font-size:30px;line-height:1}.opt b{font-size:18px;display:block;margin-top:6px}.opt small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px}
+.sum{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed var(--ln);font-size:14px}.sum:last-child{border:0}.sum b{text-align:right}.sum span{color:var(--mut)}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;margin:4px 2px 12px;cursor:pointer}.chk input{width:22px;height:22px;accent-color:var(--g);flex:none;margin:0}
+.err{background:#fff1f0;border:1px solid #f3b8b0;color:#8a2a1e;border-radius:14px;padding:11px 12px;font-size:13.5px;font-weight:600;margin-bottom:12px}
+.big{width:84px;height:84px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;margin:26px auto 14px}
+.center{text-align:center}h3{font-size:21px;font-weight:800;margin-bottom:6px}
+.mut{color:var(--mut);font-size:14px}
+.load{padding:60px 20px;text-align:center;color:var(--mut)}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid var(--soft);border-top-color:var(--g);animation:r 0.9s linear infinite;margin:0 auto 14px}@keyframes r{to{transform:rotate(360deg)}}
+.lnk{color:var(--g2);font-weight:800;background:none;border:0;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+.how .row{cursor:default}.how .num{width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--g2);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.how small{display:block;color:var(--mut);font-size:12.5px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+var API=(window.BK&&window.BK.api)||"";
+var KEY="bk-kirim-v1";
+var app=document.getElementById("app");
+var D=null,S=blank(),loadErr="",sending=false,kirimErr="";
+var NAMA_TIDAK="__tidak__";
+
+function blank(){return {step:0,jenis:"",kel:"",pos:"",pilih:"",mode:"biasa",ganti:"",edit:false,tokenNow:"",f:{nama:"",nik:"",tempat:"",tgl:"",kelamin:"",ibu:"",hp:""},tglManual:false,setuju:false,hasil:null,err:{}}}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function $(id){return document.getElementById(id)}
+
+/* ---------- penyimpanan di HP (hanya data kiriman sendiri, supaya bisa diubah) ---------- */
+function simpanLokal(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function bacaLokal(){try{return JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){return null}}
+
+/* ---------- server ---------- */
+function tanya(body,ms){
+  if(!API)return Promise.reject(new Error("api"));
+  var c=new AbortController(),t=setTimeout(function(){c.abort()},ms||20000);
+  return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body),signal:c.signal,redirect:"follow"})
+    .then(function(r){clearTimeout(t);return r.json()}).catch(function(e){clearTimeout(t);throw e});
+}
+function muat(){
+  loadErr="";D=null;render();
+  tanya({a:"daftar"}).then(function(r){
+    if(!r||!r.ok)throw new Error("x");D=r.daftar;render();
+  }).catch(function(e){loadErr=e&&e.message==="api"?"Aplikasi belum disambungkan ke server. Hubungi petugas kecamatan.":"Tidak bisa terhubung. Periksa sinyal internet, lalu coba lagi.";render()});
+}
+
+/* ---------- NIK ---------- */
+function bacaNik(n){
+  if(!/^\d{16}$/.test(n))return null;
+  var d=+n.slice(6,8),m=+n.slice(8,10),y=+n.slice(10,12),p=d>40;if(p)d-=40;
+  var yy=y>10?1900+y:2000+y;
+  var dt=new Date(yy,m-1,d);
+  if(m<1||m>12||d<1||dt.getMonth()!==m-1||dt.getDate()!==d)return {salah:true};
+  var iso=yy+"-"+("0"+m).slice(-2)+"-"+("0"+d).slice(-2);
+  return {iso:iso,kel:p?"P":"L",txt:(p?"perempuan":"laki-laki")+", lahir "+("0"+d).slice(-2)+"-"+("0"+m).slice(-2)+"-"+yy};
+}
+function tglIndo(iso){if(!iso)return"";var p=iso.split("-"),B=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];return (+p[2])+" "+B[+p[1]-1]+" "+p[0]}
+function rapiNik(n){return n.replace(/(\d{4})(?=\d)/g,"$1 ")}
+
+/* ---------- komponen ---------- */
+function bar(judul,sub,n,back){
+  var s="";for(var i=1;i<=4;i++)s+='<i'+(i<=n?' class="on"':"")+'></i>';
+  return '<div class="bar"><div class="row1">'+(back?'<button class="back" data-back="1" aria-label="Kembali">‹</button>':"")+'<div><div class="t">'+esc(judul)+'</div><div class="s">'+esc(sub)+'</div></div></div><div class="steps">'+s+'</div></div>';
+}
+function foot(html){return '<div class="foot">'+html+'</div>'}
+function dataJenis(){return (D||[]).filter(function(x){return x.j===S.jenis})}
+function uniq(a){var o=[];a.forEach(function(x){if(o.indexOf(x)<0)o.push(x)});return o}
+function bykId(id){return (D||[]).filter(function(x){return x.id===id})[0]}
+
+/* ---------- layar ---------- */
+function vHome(){
+  var lok=bacaLokal();
+  function r(n,t,s){return '<div class="row" style="padding:9px 2px;cursor:default"><div class="num" style="width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--g2);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none">'+n+'</div><div><b>'+t+'</b><div class="mut" style="font-size:12.5px">'+s+'</div></div></div>'}
+  return '<div class="top"><div class="l"><img src="logo.png" alt=""><span>Kecamatan Palu Utara</span></div><h1>Pendaftaran<br><em>BPJS Ketenagakerjaan</em></h1><p>Untuk kader Posyandu Kecamatan Palu Utara. Lengkapi data diri dalam 4 langkah, sekitar 2 menit.</p></div>'+
+  '<div class="body"><div class="dash">Ini <u>bukan</u> aplikasi laporan bulanan. Ini hanya pendaftaran BPJS Ketenagakerjaan.</div>'+
+  '<div class="card" style="padding:4px 14px">'+r(1,"Pilih jenis posyandu","Balita atau Lansia")+r(2,"Pilih nama Anda","Dari daftar SK kader")+r(3,"Isi data diri","NIK, tempat dan tanggal lahir, nama ibu, HP")+r(4,"Periksa lalu kirim","Bisa diperbaiki bila ada yang salah")+'</div>'+
+  '<div class="note"><span>🔒</span><span>Data pribadi Anda hanya dipakai untuk pendaftaran BPJS Ketenagakerjaan kader Posyandu Kecamatan Palu Utara dan tidak dibagikan ke pihak lain.</span></div></div>'+
+  foot((loadErr?'<div class="err">'+esc(loadErr)+'</div><button class="btn soft" data-act="muat">Coba lagi</button>':!D?'<div class="load" style="padding:10px"><div class="spin"></div>Memuat daftar nama…</div>':'<button class="btn soft" data-act="mulai">Mulai mengisi &nbsp;›</button>')+
+  (lok&&D?'<div class="center mut" style="font-size:12.5px;margin-top:12px">Sudah pernah mengisi? <button class="lnk" data-act="ubah">Ubah data saya</button></div>':""));
+}
+function vJenis(){
+  function o(k,ic,t,s){return '<div class="opt'+(S.jenis===k?" on":"")+'" data-jenis="'+k+'" role="button" tabindex="0"><div class="rd"></div><div style="flex:1"><div class="ic">'+ic+'</div><b>'+t+'</b><small>'+s+'</small></div></div>'}
+  return bar("Pilih jenis posyandu","Langkah 1 dari 4",1,true)+'<div class="body"><p class="mut" style="margin-bottom:14px">Anda kader di posyandu yang mana?</p>'+o("Balita","👶","Posyandu Balita","Kader posyandu untuk bayi dan anak balita")+o("Lansia","👵","Posyandu Lansia","Kader posyandu untuk lanjut usia")+'<div class="note" style="margin-top:6px"><span>💡</span><span>Bertugas di keduanya? Isi satu dulu sampai selesai, lalu mulai lagi untuk yang satunya.</span></div></div>'+foot('<button class="btn" data-act="lanjut"'+(S.jenis?"":" disabled")+'>Lanjut ›</button>');
+}
+function vNama(){
+  var dj=dataJenis(),kels=uniq(dj.map(function(x){return x.k}));
+  var poss=uniq(dj.filter(function(x){return x.k===S.kel}).map(function(x){return x.p}));
+  var h=bar("Pilih nama Anda","Langkah 2 dari 4",2,true)+'<div class="body"><div class="rib">Posyandu '+esc(S.jenis)+'<button data-act="gantijenis">Ganti</button></div>';
+  h+='<label for="kel">Kelurahan</label><select class="in" id="kel"><option value="">Pilih kelurahan</option>'+kels.map(function(k){return '<option'+(k===S.kel?" selected":"")+'>'+esc(k)+'</option>'}).join("")+'</select>';
+  h+='<label for="pos">Posyandu</label><select class="in" id="pos"'+(S.kel?"":" disabled")+'><option value="">Pilih posyandu</option>'+poss.map(function(k){return '<option'+(k===S.pos?" selected":"")+'>'+esc(k)+'</option>'}).join("")+'</select>';
+  if(S.pos){
+    var ns=dj.filter(function(x){return x.k===S.kel&&x.p===S.pos});
+    h+='<label>Nama Anda</label><div class="card" role="radiogroup">'+ns.map(function(x){
+      var dis=x.s!=="kosong"&&!(bacaLokal()&&bacaLokal().id===x.id);
+      var chip=x.s==="sudah"?'<span class="chip">Sudah mengisi</span>':x.s==="diganti"?'<span class="chip">Sudah diganti</span>':"";
+      return '<div class="row'+(S.pilih===x.id?" on":"")+(dis?" dis":"")+'" data-pilih="'+x.id+'"'+(dis?' aria-disabled="true"':"")+' role="radio" aria-checked="'+(S.pilih===x.id)+'"><div class="rd"></div><div class="nm">'+esc(x.n)+'</div>'+chip+'</div>';
+    }).join("")+'<div class="row ada'+(S.pilih===NAMA_TIDAK?" on":"")+'" data-pilih="'+NAMA_TIDAK+'" role="radio" aria-checked="'+(S.pilih===NAMA_TIDAK)+'"><div class="rd"></div><div class="nm">Nama saya tidak ada di daftar</div></div></div>';
+  }
+  return h+'</div>'+foot('<button class="btn" data-act="lanjut"'+(S.pilih?"":" disabled")+'>Lanjut ›</button>');
+}
+function vGanti(){
+  var ns=dataJenis().filter(function(x){return x.k===S.kel&&x.p===S.pos});
+  return bar("Siapa yang Anda gantikan?","Langkah 2 dari 4 · Posyandu "+S.jenis+" "+S.pos,2,true)+'<div class="body"><div class="card">'+ns.map(function(x){
+    var dis=x.s!=="kosong";var chip=x.s==="sudah"?'<span class="chip">Sudah mengisi</span>':x.s==="diganti"?'<span class="chip">Sudah diganti</span>':"";
+    return '<div class="row'+(S.ganti===x.id?" on":"")+(dis?" dis":"")+'" data-ganti="'+x.id+'" role="radio" aria-checked="'+(S.ganti===x.id)+'"><div class="rd"></div><div class="nm">'+esc(x.n)+'</div>'+chip+'</div>';
+  }).join("")+'</div></div>'+foot('<button class="btn" data-act="lanjut"'+(S.ganti?"":" disabled")+'>Lanjut ›</button>');
+}
+function vData(){
+  var f=S.f,e=S.err,x=S.mode==="pengganti"?bykId(S.ganti):bykId(S.pilih);
+  var info=bacaNik(f.nik),hint="";
+  if(f.nik.length===16){hint=info&&info.txt?'<div class="hint ok" id="nikhint">Sesuai NIK: '+info.txt+'</div>':'<div class="hint bad" id="nikhint">Tanggal di NIK ini tidak masuk akal. Periksa lagi.</div>'}else hint='<div id="nikhint"></div>';
+  var rib=S.mode==="pengganti"&&x?'<div class="rib">👤 Pengganti Ibu/Bapak '+esc(x.n)+' · Posyandu '+esc(x.p)+'</div>':"";
+  function fld(id,label,val,extra,err){return '<label for="'+id+'">'+label+'</label><input class="in'+(err?" bad":"")+'" id="'+id+'" value="'+esc(val)+'" '+extra+'>'+(err?'<div class="hint bad">'+esc(err)+'</div>':"")}
+  var h=bar(S.edit?"Ubah data saya":"Data diri","Langkah 3 dari 4",3,true)+'<div class="body">'+rib;
+  h+=S.mode==="pengganti"?fld("nama","Nama lengkap Anda (sesuai KTP)",f.nama,'autocomplete="name" autocapitalize="words"',e.nama):'<label>Nama lengkap</label><input class="in" value="'+esc(f.nama)+'" readonly>';
+  h+='<label for="nik">NIK (16 angka)</label><div class="fl"><input class="in'+(e.nik?" bad":"")+'" id="nik" inputmode="numeric" maxlength="19" autocomplete="off" value="'+esc(rapiNik(f.nik))+'"><span class="cnt'+(f.nik.length>16?" bad":"")+'" id="cnt">'+f.nik.length+'/16'+(f.nik.length===16?" ✓":"")+'</span></div>'+(e.nik?'<div class="hint bad">'+esc(e.nik)+'</div>':hint);
+  h+=fld("tempat","Tempat lahir",f.tempat,'autocomplete="off" autocapitalize="words"',e.tempat);
+  h+=fld("tgl","Tanggal lahir",f.tgl,'type="date" max="2012-12-31" min="1930-01-01"',e.tgl);
+  h+='<label>Jenis kelamin</label><div class="seg" id="kelamin"><button type="button" data-kel="L" class="'+(f.kelamin==="L"?"on":"")+'">Laki-laki</button><button type="button" data-kel="P" class="'+(f.kelamin==="P"?"on":"")+'">Perempuan</button></div>'+(e.kelamin?'<div class="hint bad" style="margin-top:-8px">'+esc(e.kelamin)+'</div>':"");
+  h+=fld("ibu","Nama ibu kandung",f.ibu,'autocomplete="off" autocapitalize="words"',e.ibu);
+  h+=fld("hp","Nomor HP (WhatsApp)",f.hp,'inputmode="tel" autocomplete="tel" maxlength="16"',e.hp);
+  return h+'</div>'+foot('<button class="btn" data-act="lanjut">Lanjut ›</button>');
+}
+function vPeriksa(){
+  var f=S.f,x=bykId(S.mode==="pengganti"?S.ganti:S.pilih);
+  var h=bar("Periksa data","Langkah 4 dari 4",4,true)+'<div class="body"><div class="card" style="padding:8px 16px">';
+  h+='<div class="sum"><span>Posyandu</span><b>'+esc(x?x.p+", "+x.k:"")+'<br><small style="font-weight:500;color:var(--mut)">Posyandu '+esc(S.jenis)+'</small></b></div>';
+  if(S.mode==="pengganti")h+='<div class="sum"><span>Menggantikan</span><b>'+esc(x?x.n:"")+'</b></div>';
+  h+='<div class="sum"><span>Nama</span><b>'+esc(f.nama)+'</b></div><div class="sum"><span>NIK</span><b>'+esc(rapiNik(f.nik))+'</b></div><div class="sum"><span>Tempat, tgl lahir</span><b>'+esc(f.tempat)+', '+esc(tglIndo(f.tgl))+'</b></div><div class="sum"><span>Kelamin</span><b>'+(f.kelamin==="P"?"Perempuan":"Laki-laki")+'</b></div><div class="sum"><span>Nama ibu</span><b>'+esc(f.ibu)+'</b></div><div class="sum"><span>Nomor HP</span><b>'+esc(f.hp)+'</b></div></div>';
+  h+='<label class="chk"><input type="checkbox" id="setuju"'+(S.setuju?" checked":"")+'><span>Saya menyatakan data di atas benar dan setuju dipakai untuk pendaftaran BPJS Ketenagakerjaan.</span></label>';
+  if(kirimErr)h+='<div class="err" role="alert">'+esc(kirimErr)+'</div>';
+  return h+'</div>'+foot('<button class="btn soft" data-act="kirim"'+(S.setuju&&!sending?"":" disabled")+'>'+(sending?"Mengirim…":"Kirim data")+'</button><button class="btn o" data-back="1" style="min-height:48px">‹ Perbaiki</button>');
+}
+function vSelesai(){
+  var r=S.hasil||{};
+  return '<div class="body center" style="padding-top:60px"><div class="big"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#b3175f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h3>Data sudah terkirim</h3><p class="mut" style="padding:0 18px;line-height:1.5">Terima kasih, '+esc(S.f.nama)+'. '+(S.mode==="pengganti"?"Data Anda sebagai pengganti sudah masuk ke kecamatan.":"Data Anda sudah masuk ke kecamatan.")+'</p><div class="card" style="margin:20px 4px;text-align:left;padding:8px 16px"><div class="sum"><span>Nomor tanda terima</span><b>'+esc(r.resi||"")+'</b></div><div class="sum"><span>Waktu</span><b>'+esc(r.waktu||"")+'</b></div></div><p class="mut" style="font-size:12.5px">Simpan nomor ini. Anda bisa mengubah data lewat tombol di bawah, hanya dari HP ini.</p></div>'+foot('<button class="btn o" data-act="ubah">Ubah data saya</button><button class="btn" data-act="selesai">Selesai</button>');
+}
+function render(){
+  var h=S.step===0?vHome():!D?'<div class="load"><div class="spin"></div>Memuat…</div>':S.step===1?vJenis():S.step===2?vNama():S.step===3?vGanti():S.step===4?vData():S.step===5?vPeriksa():vSelesai();
+  var y=window.scrollY;app.innerHTML=h;
+  if(S._keep){window.scrollTo(0,y);S._keep=false}else window.scrollTo(0,0);
+}
+
+/* ---------- validasi ---------- */
+function cek(){
+  var f=S.f,e={};
+  f.nama=f.nama.replace(/\s+/g," ").trim();
+  if(S.mode==="pengganti"&&f.nama.length<3)e.nama="Tulis nama lengkap Anda.";
+  if(!/^\d{16}$/.test(f.nik))e.nik="NIK harus 16 angka.";else{var i=bacaNik(f.nik);if(i&&i.salah)e.nik="Tanggal di NIK ini tidak masuk akal. Periksa lagi."}
+  if(f.tempat.trim().length<2)e.tempat="Tempat lahir belum diisi.";
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(f.tgl)||f.tgl<"1930-01-01"||f.tgl>"2012-12-31")e.tgl="Tanggal lahir belum benar.";
+  if(!f.kelamin)e.kelamin="Pilih jenis kelamin.";
+  if(f.ibu.trim().length<3)e.ibu="Nama ibu kandung belum diisi.";
+  var hp=f.hp.replace(/\D/g,"");if(!/^0\d{9,13}$/.test(hp))e.hp="Nomor HP diawali 0, 10 sampai 14 angka.";
+  S.err=e;return Object.keys(e).length===0;
+}
+
+/* ---------- aksi ---------- */
+function kirim(){
+  if(sending)return;sending=true;kirimErr="";S._keep=true;render();
+  var x=S.mode==="pengganti"?S.ganti:S.pilih,lok=bacaLokal(),tok=lok&&lok.id===x?lok.token:"";
+  var f=S.f;
+  tanya({a:"kirim",mode:S.mode,id:x,nama:f.nama,nik:f.nik,tempat:f.tempat.trim(),tgl:f.tgl,kelamin:f.kelamin,ibu:f.ibu.trim(),hp:f.hp.replace(/\D/g,""),token:tok},30000).then(function(r){
+    sending=false;
+    if(!r||!r.ok){kirimErr=(r&&r.pesan)||"Data belum terkirim. Coba lagi.";S._keep=true;render();return}
+    S.hasil=r;simpanLokal({id:x,mode:S.mode,token:r.token,resi:r.resi,jenis:S.jenis,kel:S.kel,pos:S.pos,f:S.f});
+    if(D){var it=bykId(x);if(it)it.s=S.mode==="pengganti"?"diganti":"sudah"}
+    S.step=6;render();
+  }).catch(function(){sending=false;kirimErr="Tidak bisa terhubung. Data Anda belum terkirim. Periksa sinyal, lalu tekan Kirim lagi.";S._keep=true;render()});
+}
+function mulaiUbah(){
+  var l=bacaLokal();if(!l)return;
+  S=blank();S.jenis=l.jenis;S.kel=l.kel;S.pos=l.pos;S.mode=l.mode;S.f=l.f;S.edit=true;S.tglManual=true;
+  if(l.mode==="pengganti")S.ganti=l.id;else S.pilih=l.id;
+  S.step=4;kirimErr="";render();
+}
+function maju(){
+  if(S.step===1){S.step=2}
+  else if(S.step===2){if(S.pilih===NAMA_TIDAK){S.mode="pengganti";S.step=3}else{S.mode="biasa";var x=bykId(S.pilih);S.f.nama=x?x.n:"";S.step=4}}
+  else if(S.step===3){S.f.nama=S.edit?S.f.nama:"";S.step=4}
+  else if(S.step===4){if(!cek()){S._keep=true;render();var b=document.querySelector(".in.bad");if(b)b.scrollIntoView({block:"center"});return}S.setuju=false;kirimErr="";S.step=5}
+  render();
+}
+function mundur(){
+  if(S.step===1)S.step=0;
+  else if(S.step===2)S.step=1;
+  else if(S.step===3)S.step=2;
+  else if(S.step===4)S.step=S.edit?0:S.mode==="pengganti"?3:2;
+  else if(S.step===5)S.step=4;
+  if(S.step===0){S=blank();S.step=0}
+  render();
+}
+app.addEventListener("click",function(ev){
+  var t=ev.target.closest("[data-act],[data-back],[data-jenis],[data-pilih],[data-ganti],[data-kel]");if(!t)return;
+  if(t.dataset.back){mundur();return}
+  if(t.dataset.jenis){if(S.jenis!==t.dataset.jenis){S.jenis=t.dataset.jenis;S.kel="";S.pos="";S.pilih=""}S._keep=true;render();return}
+  if(t.dataset.pilih){if(t.classList.contains("dis"))return;S.pilih=t.dataset.pilih;S._keep=true;render();return}
+  if(t.dataset.ganti){if(t.classList.contains("dis"))return;S.ganti=t.dataset.ganti;S._keep=true;render();return}
+  if(t.dataset.kel){S.f.kelamin=t.dataset.kel;[].forEach.call(document.querySelectorAll("#kelamin button"),function(b){b.classList.toggle("on",b.dataset.kel===S.f.kelamin)});return}
+  var a=t.dataset.act;
+  if(a==="muat")muat();
+  else if(a==="mulai"){S=blank();S.step=1;render()}
+  else if(a==="lanjut")maju();
+  else if(a==="gantijenis"){S.step=1;render()}
+  else if(a==="kirim"){if(S.setuju)kirim()}
+  else if(a==="ubah")mulaiUbah();
+  else if(a==="selesai"){S=blank();render()}
+});
+app.addEventListener("keydown",function(ev){if((ev.key==="Enter"||ev.key===" ")&&ev.target.getAttribute&&ev.target.getAttribute("role")==="button"){ev.preventDefault();ev.target.click()}});
+app.addEventListener("change",function(ev){
+  var t=ev.target;
+  if(t.id==="kel"){S.kel=t.value;S.pos="";S.pilih="";S._keep=true;render()}
+  else if(t.id==="pos"){S.pos=t.value;S.pilih="";S._keep=true;render()}
+  else if(t.id==="setuju"){S.setuju=t.checked;var b=document.querySelector('[data-act="kirim"]');if(b)b.disabled=!S.setuju||sending}
+  else if(t.id==="tgl"){S.f.tgl=t.value;S.tglManual=true}
+});
+app.addEventListener("input",function(ev){
+  var t=ev.target,id=t.id;
+  if(id==="nama"||id==="tempat"||id==="ibu"){S.f[id]=t.value;t.classList.remove("bad")}
+  else if(id==="hp"){S.f.hp=t.value.replace(/[^\d ]/g,"");if(t.value!==S.f.hp)t.value=S.f.hp}
+  else if(id==="tgl"){S.f.tgl=t.value;S.tglManual=true}
+  else if(id==="nik"){
+    var d=t.value.replace(/\D/g,"").slice(0,16);S.f.nik=d;
+    var pos=t.selectionStart;t.value=rapiNik(d);try{t.setSelectionRange(t.value.length,t.value.length)}catch(e){}
+    t.classList.remove("bad");
+    var c=$("cnt");if(c){c.textContent=d.length+"/16"+(d.length===16?" ✓":"");c.className="cnt"}
+    var hh=$("nikhint");
+    if(d.length===16){
+      var i=bacaNik(d);
+      if(i&&i.txt){
+        if(hh)hh.outerHTML='<div class="hint ok" id="nikhint">Sesuai NIK: '+i.txt+'</div>';
+        if(!S.tglManual||!S.f.tgl){S.f.tgl=i.iso;var tg=$("tgl");if(tg)tg.value=i.iso}
+        S.f.kelamin=i.kel;[].forEach.call(document.querySelectorAll("#kelamin button"),function(b){b.classList.toggle("on",b.dataset.kel===i.kel)});
+      }else if(hh)hh.outerHTML='<div class="hint bad" id="nikhint">Tanggal di NIK ini tidak masuk akal. Periksa lagi.</div>';
+    }else if(hh)hh.outerHTML='<div id="nikhint"></div>';
+  }
+});
+muat();
+})();
+</script>
+</body>
+</html>

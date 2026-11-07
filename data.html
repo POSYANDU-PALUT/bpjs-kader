@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3d0a26">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Data BPJS Ketenagakerjaan Kader</title>
+<link rel="icon" href="logo.png">
+<style>
+*{box-sizing:border-box;margin:0}
+:root{--g:#d62f84;--g2:#b3175f;--gd:#3d0a26;--bg:#fbf5f8;--ln:#f0dde6;--mut:#7a5e6b;--fg:#2a1019;--bad:#d64535;--soft:#fde1ee;--field:#f8eff4}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);font-size:15px;line-height:1.4;min-height:100vh}
+.wrap{max-width:1180px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top,0px)) 18px 40px}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:6px}.head img{width:42px}.head h1{font-size:22px;font-weight:800;line-height:1.15}.head small{display:block;color:var(--mut);font-size:12.5px;font-weight:500;margin-top:2px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;align-items:stretch}
+.k{background:#fff;border:1px solid var(--ln);border-radius:16px;padding:10px 16px}.k small{display:block;color:var(--mut);font-weight:700;font-size:12px}.k b{font-size:24px;font-weight:800}.k b span{font-size:13px;color:var(--mut);font-weight:600}
+.k.ok b{color:var(--g2)}.k.no b{color:var(--bad)}
+.sp{flex:1}
+.btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:50px;padding:0 20px;border-radius:14px;border:0;font:inherit;font-size:15px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(180deg,#e8458f,#c01a68);box-shadow:0 10px 20px -12px rgba(214,47,132,.6)}
+.btn.o{background:#fff;color:var(--fg);border:1.5px solid var(--ln);box-shadow:none}
+.btn:disabled{opacity:.5;cursor:wait}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 12px}
+.seg{display:flex;gap:8px}.seg button{border:1.5px solid var(--ln);border-radius:14px;padding:0 18px;min-height:46px;font:inherit;font-weight:700;background:#fff;color:var(--fg);cursor:pointer}.seg button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.in{background:var(--field);border:1.5px solid var(--ln);border-radius:14px;min-height:46px;padding:0 14px;font:inherit;font-size:15px;color:var(--fg);min-width:0}
+select.in{padding-right:34px;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23b3175f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.in:focus{outline:0;border-color:var(--g);background:#fff}
+.tw{background:#fff;border:1px solid var(--ln);border-radius:16px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:#f9edf3;text-align:left;padding:10px 12px;font-size:12px;color:var(--mut);white-space:nowrap;position:sticky;top:0}
+td{padding:9px 12px;border-top:1px solid var(--ln);vertical-align:top}
+td small{display:block;color:var(--mut);font-size:12px}
+.chip{display:inline-block;font-size:11.5px;font-weight:800;border-radius:20px;padding:2px 9px;background:var(--soft);color:var(--g2)}
+.cards{display:none}
+.cd{background:#fff;border:1px solid var(--ln);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.cd b{font-size:15px}.cd .m{color:var(--mut);font-size:12.5px;margin-top:2px}.cd .g{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin-top:8px;font-size:13.5px}.cd .g span{color:var(--mut)}
+.foot{color:var(--mut);font-size:12.5px;margin:10px 2px}
+details{background:#fff;border:1px solid var(--ln);border-radius:16px;padding:12px 16px;margin-top:14px}summary{font-weight:800;cursor:pointer}
+details li{margin:6px 0 0 18px;font-size:14px}details li small{color:var(--mut)}
+.msg{background:#fff;border:1px solid var(--ln);border-radius:20px;padding:30px 20px;text-align:center;margin-top:40px}.msg h2{font-size:20px;margin-bottom:6px}.msg p{color:var(--mut)}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid var(--soft);border-top-color:var(--g);animation:r .9s linear infinite;margin:0 auto 12px}@keyframes r{to{transform:rotate(360deg)}}
+.warn{background:#fff8e1;border:1px solid #f0dc9c;color:#5b4a00;border-radius:14px;padding:10px 12px;font-size:12.5px;margin-top:14px}
+@media(max-width:760px){.tw{display:none}.cards{display:block}.btns{width:100%}.btns .btn{flex:1}.head h1{font-size:19px}.k b{font-size:21px}.sp{display:none}.tools .in{flex:1;min-width:140px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+var API=(window.BK&&window.BK.api)||"";
+var app=document.getElementById("app");
+var KODE=(location.hash.match(/[#&]k=([A-Za-z0-9]+)/)||[])[1]||"";
+var R=null,err="",jenis="Balita",fKel="",fPos="",cari="",sibuk="";
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function rapi(n){return String(n).replace(/(\d{4})(?=\d)/g,"$1 ")}
+function mask(n){n=String(n);return n.slice(0,4)+"…"+n.slice(-4)}
+function tgl(iso){var p=String(iso).split("-");return p.length===3?p[2]+"-"+p[1]+"-"+p[0]:iso}
+function tglX(iso){var p=String(iso).split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:iso}
+
+function muat(){
+  err="";R=null;render();
+  if(!KODE){err="Tautan tidak lengkap. Buka lagi dari tautan yang diberikan.";render();return}
+  if(!API){err="Aplikasi belum disambungkan ke server.";render();return}
+  fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({a:"data",k:KODE})})
+    .then(function(r){return r.json()}).then(function(r){
+      if(!r||!r.ok){err=(r&&r.pesan)||"Tautan tidak berlaku.";render();return}
+      urut(r);R=r;render();
+    }).catch(function(){err="Tidak bisa terhubung ke server. Periksa sinyal, lalu coba lagi.";render()});
+}
+function urut(r){
+  var ix={};r.daftar.forEach(function(d,i){ix[d.id]=i});
+  r.isi.sort(function(a,b){return (ix[a.id]==null?9999:ix[a.id])-(ix[b.id]==null?9999:ix[b.id])});
+}
+function baris(j){
+  return R.isi.filter(function(x){
+    if(x.j!==j)return false;
+    if(fKel&&x.k!==fKel)return false;
+    if(fPos&&x.p!==fPos)return false;
+    if(cari&&(x.nama+" "+x.sk).toLowerCase().indexOf(cari.toLowerCase())<0)return false;
+    return true;
+  });
+}
+function uniq(a){var o=[];a.forEach(function(x){if(o.indexOf(x)<0)o.push(x)});return o}
+function render(){
+  if(err){app.innerHTML='<div class="msg"><h2>'+(KODE?"Data belum bisa dibuka":"Tautan tidak lengkap")+'</h2><p>'+esc(err)+'</p>'+(KODE&&API?'<p style="margin-top:14px"><button class="btn" id="coba">Coba lagi</button></p>':"")+'</div>';var c=document.getElementById("coba");if(c)c.onclick=muat;return}
+  if(!R){app.innerHTML='<div class="msg"><div class="spin"></div><p>Memuat data…</p></div>';return}
+  var tot=R.daftar.length,sudah=R.daftar.filter(function(d){return d.s!=="kosong"}).length,belum=tot-sudah;
+  var dj=R.daftar.filter(function(d){return d.j===jenis});
+  var kels=uniq(dj.map(function(d){return d.k})),poss=uniq(dj.filter(function(d){return !fKel||d.k===fKel}).map(function(d){return d.p}));
+  var rows=baris(jenis);
+  var h='<div class="head"><img src="logo.png" alt=""><div><h1>Data BPJS Ketenagakerjaan</h1><small>Kader Posyandu · Kecamatan Palu Utara</small></div></div>';
+  h+='<div class="kpis"><div class="k ok"><small>Sudah mengisi</small><b>'+sudah+' <span>dari '+tot+'</span></b></div><div class="k no"><small>Belum mengisi</small><b>'+belum+'</b></div><div class="sp"></div><div class="btns"><button class="btn o" id="pdf"'+(sibuk?" disabled":"")+'>⬇ Unduh PDF</button><button class="btn" id="xls"'+(sibuk?" disabled":"")+'>⬇ Unduh Excel</button></div></div>';
+  if(sibuk)h+='<div class="foot" role="status">'+esc(sibuk)+'</div>';
+  h+='<div class="tools"><div class="seg"><button data-j="Balita" class="'+(jenis==="Balita"?"on":"")+'">Posyandu Balita</button><button data-j="Lansia" class="'+(jenis==="Lansia"?"on":"")+'">Posyandu Lansia</button></div>';
+  h+='<select class="in" id="fkel" aria-label="Kelurahan"><option value="">Semua kelurahan</option>'+kels.map(function(k){return '<option'+(k===fKel?" selected":"")+'>'+esc(k)+'</option>'}).join("")+'</select>';
+  h+='<select class="in" id="fpos" aria-label="Posyandu"><option value="">Semua posyandu</option>'+poss.map(function(k){return '<option'+(k===fPos?" selected":"")+'>'+esc(k)+'</option>'}).join("")+'</select>';
+  h+='<input class="in" id="cari" type="search" placeholder="🔍 Cari nama…" value="'+esc(cari)+'" style="flex:1;min-width:160px"></div>';
+  if(!rows.length)h+='<div class="msg" style="margin-top:10px"><p>Belum ada data yang masuk untuk pilihan ini.</p></div>';
+  else{
+    h+='<div class="tw"><table><thead><tr><th>No</th><th>Nama</th><th>NIK</th><th>Tempat, tgl lahir</th><th>L/P</th><th>Ibu kandung</th><th>HP</th><th>Posyandu</th></tr></thead><tbody>';
+    rows.forEach(function(x,i){h+='<tr><td>'+(i+1)+'</td><td><b>'+esc(x.nama)+'</b>'+(x.peng?'<small>Pengganti '+esc(x.sk)+'</small>':"")+'</td><td>'+esc(mask(x.nik))+'</td><td>'+esc(x.tempat)+', '+esc(tgl(x.tgl))+'</td><td>'+esc(x.kel)+'</td><td>'+esc(x.ibu)+'</td><td>'+esc(x.hp)+'</td><td>'+esc(x.p)+'<small>'+esc(x.k)+'</small></td></tr>'});
+    h+='</tbody></table></div><div class="cards">';
+    rows.forEach(function(x,i){h+='<div class="cd"><b>'+(i+1)+'. '+esc(x.nama)+'</b>'+(x.peng?' <span class="chip">Pengganti '+esc(x.sk)+'</span>':"")+'<div class="m">'+esc(x.p)+', '+esc(x.k)+'</div><div class="g"><span>NIK</span><div>'+esc(mask(x.nik))+'</div><span>Lahir</span><div>'+esc(x.tempat)+', '+esc(tgl(x.tgl))+' ('+esc(x.kel)+')</div><span>Ibu</span><div>'+esc(x.ibu)+'</div><span>HP</span><div>'+esc(x.hp)+'</div></div></div>'});
+    h+='</div>';
+  }
+  h+='<div class="foot">Menampilkan '+rows.length+' kader Posyandu '+esc(jenis)+'. File unduhan memuat semua yang sudah masuk (Balita dan Lansia).</div>';
+  var bl=R.daftar.filter(function(d){return d.s==="kosong"});
+  h+='<details><summary>Belum mengisi ('+bl.length+')</summary><ul>'+(bl.length?bl.map(function(d){return '<li>'+esc(d.n)+' <small>· '+esc(d.p)+', '+esc(d.k)+' · '+esc(d.j)+'</small></li>'}).join(""):"<li>Semua sudah mengisi.</li>")+'</ul></details>';
+  h+='<div class="warn">🔒 Halaman ini berisi data pribadi. Jangan membagikan tautan ini. Setelah selesai mengambil data, hapus Google Sheet dan aplikasi ini.</div>';
+  var y=window.scrollY;app.innerHTML=h;window.scrollTo(0,y);
+  var s=document.getElementById("cari");if(s&&cari){s.focus();s.setSelectionRange(cari.length,cari.length)}
+}
+app.addEventListener("click",function(ev){
+  var t=ev.target.closest("button");if(!t)return;
+  if(t.dataset.j){jenis=t.dataset.j;fKel="";fPos="";render()}
+  else if(t.id==="xls")unduhExcel();
+  else if(t.id==="pdf")unduhPdf();
+});
+app.addEventListener("change",function(ev){var t=ev.target;if(t.id==="fkel"){fKel=t.value;fPos="";render()}else if(t.id==="fpos"){fPos=t.value;render()}});
+app.addEventListener("input",function(ev){if(ev.target.id==="cari"){cari=ev.target.value;render()}});
+
+/* ---------- unduhan ---------- */
+function skrip(src){return new Promise(function(ok,gagal){var s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=function(){gagal(new Error(src))};document.head.appendChild(s)})}
+function tanggalFile(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function simpan(blob,nama){var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=nama;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u)},4000)}
+function semua(j){return R.isi.filter(function(x){return x.j===j})}
+function b64buf(b){var s=atob(b),n=s.length,u=new Uint8Array(n);for(var i=0;i<n;i++)u[i]=s.charCodeAt(i);return u.buffer}
+
+function unduhExcel(){
+  sibuk="Menyiapkan file Excel…";render();
+  Promise.all([window.ExcelJS?0:skrip("lib/exceljs.min.js"),window.BK_FORM?0:skrip("lib/form-bpjs.js")]).then(function(){
+    var wb=new window.ExcelJS.Workbook();
+    return wb.xlsx.load(b64buf(window.BK_FORM)).then(function(){
+      [["Balita","Posyandu Balita"],["Lansia","Posyandu Lansia"]].forEach(function(p){
+        var ws=wb.getWorksheet(p[1]);if(!ws)return;
+        semua(p[0]).forEach(function(x,i){
+          var r=ws.getRow(3+i);
+          r.getCell(1).value=i+1;
+          function t(c,v){var cell=r.getCell(c);cell.value=String(v);cell.numFmt="@"}
+          t(2,x.nik);t(3,x.nama);t(4,x.tempat);t(5,tglX(x.tgl));t(6,x.kel);t(7,x.ibu);t(8,x.hp);
+          r.commit&&r.commit();
+        });
+      });
+      return wb.xlsx.writeBuffer();
+    });
+  }).then(function(buf){
+    simpan(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),"BPJS-Ketenagakerjaan-Kader-Posyandu-"+tanggalFile()+".xlsx");
+    sibuk="";render();
+  }).catch(function(e){sibuk="Excel belum bisa dibuat. Muat ulang halaman lalu coba lagi.";render();console.error(e)});
+}
+function unduhPdf(){
+  sibuk="Menyiapkan file PDF…";render();
+  Promise.all([window.jspdf?0:skrip("lib/jspdf.umd.min.js")]).then(function(){return window.jspdf&&window.jspdf.jsPDF&&window.jspdf.jsPDF.API&&window.jspdf.jsPDF.API.autoTable?0:skrip("lib/jspdf.plugin.autotable.min.js")}).then(function(){
+    var doc=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"}),first=true;
+    [["Balita","Posyandu Balita"],["Lansia","Posyandu Lansia"]].forEach(function(p){
+      var list=semua(p[0]);if(!list.length)return;
+      if(!first)doc.addPage();first=false;
+      doc.setFont("helvetica","bold");doc.setFontSize(13);doc.text("Data Pendaftaran BPJS Ketenagakerjaan Kader "+p[1],14,14);
+      doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text("Kecamatan Palu Utara · Dicetak "+tglX(tanggalFile().split("-").reverse().join("-").split("-").reverse().join("-"))+" · "+list.length+" kader",14,19);
+      doc.autoTable({startY:23,margin:{left:14,right:14,bottom:14},theme:"grid",styles:{fontSize:8,cellPadding:1.6,lineColor:[225,205,215],lineWidth:.2},headStyles:{fillColor:[179,23,95],textColor:255,fontStyle:"bold"},alternateRowStyles:{fillColor:[252,244,248]},
+        head:[["No","Nama","NIK","Tempat, tgl lahir","L/P","Ibu kandung","HP","Posyandu","Kelurahan"]],
+        body:list.map(function(x,i){return [i+1,x.nama+(x.peng?" (pengganti "+x.sk+")":""),x.nik,x.tempat+", "+tglX(x.tgl),x.kel,x.ibu,x.hp,x.p,x.k]}),
+        columnStyles:{0:{cellWidth:9},2:{cellWidth:35},4:{cellWidth:9},6:{cellWidth:27}},
+        didDrawPage:function(){var n=doc.internal.getNumberOfPages();doc.setFontSize(8);doc.setTextColor(120);doc.text("Rahasia: berisi data pribadi. Halaman "+doc.internal.getCurrentPageInfo().pageNumber,14,doc.internal.pageSize.getHeight()-6);doc.setTextColor(0)}});
+    });
+    if(first){doc.setFontSize(12);doc.text("Belum ada data yang masuk.",14,20)}
+    simpan(doc.output("blob"),"BPJS-Ketenagakerjaan-Kader-Posyandu-"+tanggalFile()+".pdf");
+    sibuk="";render();
+  }).catch(function(e){sibuk="PDF belum bisa dibuat. Muat ulang halaman lalu coba lagi.";render();console.error(e)});
+}
+muat();
+})();
+</script>
+</body>
+</html>
