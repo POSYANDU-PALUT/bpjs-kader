@@ -42,11 +42,25 @@ details li{margin:6px 0 0 18px;font-size:14px}details li small{color:var(--mut)}
 .msg{background:#fff;border:1px solid var(--ln);border-radius:20px;padding:30px 20px;text-align:center;margin-top:40px}.msg h2{font-size:20px;margin-bottom:6px}.msg p{color:var(--mut)}
 .spin{width:34px;height:34px;border-radius:50%;border:4px solid var(--soft);border-top-color:var(--g);animation:r .9s linear infinite;margin:0 auto 12px}@keyframes r{to{transform:rotate(360deg)}}
 .warn{background:#fff8e1;border:1px solid #f0dc9c;color:#5b4a00;border-radius:14px;padding:10px 12px;font-size:12.5px;margin-top:14px}
+.chip.ub{background:#fff1d6;color:#8a5200;margin-left:4px}
+.bt-u{font:inherit;font-size:13px;font-weight:700;border:1.5px solid var(--ln);background:#fff;color:var(--g2);border-radius:10px;padding:5px 12px;cursor:pointer;white-space:nowrap}.bt-u:hover{border-color:var(--g)}
+.cd .bt-u{margin-top:10px;width:100%;min-height:42px}
+#mdl{position:fixed;inset:0;background:rgba(42,16,25,.55);z-index:50;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:calc(20px + env(safe-area-inset-top,0px)) 14px 30px}
+#mdl.on{display:flex}
+#mdl .box{background:#fff;border-radius:20px;width:100%;max-width:520px;padding:18px 18px 16px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+#mdl h2{font-size:19px;font-weight:800}#mdl .sub{color:var(--mut);font-size:12.5px;margin:3px 0 12px}
+#mdl label{display:block;font-weight:700;font-size:13px;margin:10px 0 4px}#mdl .in{width:100%}
+#mdl .er{color:var(--bad);font-size:12.5px;margin-top:3px}
+#mdl .info{color:var(--g2);font-size:12.5px;margin-top:3px}
+#mdl .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#mdl .aksi{display:flex;gap:10px;margin-top:16px}#mdl .aksi .btn{flex:1}
+#mdl .gal{background:#fdecea;border:1px solid #f3c1bb;color:#8a2a20;border-radius:12px;padding:9px 12px;font-size:13px;margin-top:12px;font-weight:600}
 @media(max-width:760px){#segar{flex-basis:100%}.btns .btn{padding:0 10px}.tw{display:none}.cards{display:block}.btns{width:100%}.btns .btn{flex:1}.head h1{font-size:19px}.k b{font-size:21px}.sp{display:none}.tools .in{flex:1;min-width:140px}}
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
+<div id="mdl" role="dialog" aria-modal="true" aria-label="Ubah data kader"></div>
 <script src="config.js"></script>
 <script>
 (function(){
@@ -113,10 +127,10 @@ function render(){
   h+='<input class="in" id="cari" type="search" placeholder="🔍 Cari nama…" value="'+esc(cari)+'" style="flex:1;min-width:160px"></div>';
   if(!rows.length)h+='<div class="msg" style="margin-top:10px"><p>Belum ada data yang masuk untuk pilihan ini.</p></div>';
   else{
-    h+='<div class="tw"><table><thead><tr><th>No</th><th>Nama</th><th>NIK</th><th>Tempat, tgl lahir</th><th>L/P</th><th>Ibu kandung</th><th>HP</th><th>Posyandu</th></tr></thead><tbody>';
-    rows.forEach(function(x,i){h+='<tr><td>'+(i+1)+'</td><td><b>'+esc(x.nama)+'</b>'+(x.peng?'<small>Pengganti '+esc(x.sk)+'</small>':"")+'</td><td>'+esc(mask(x.nik))+'</td><td>'+esc(x.tempat)+', '+esc(tgl(x.tgl))+'</td><td>'+esc(x.kel)+'</td><td>'+esc(x.ibu)+'</td><td>'+esc(x.hp)+'</td><td>'+esc(x.p)+'<small>'+esc(x.k)+'</small></td></tr>'});
+    h+='<div class="tw"><table><thead><tr><th>No</th><th>Nama</th><th>NIK</th><th>Tempat, tgl lahir</th><th>L/P</th><th>Ibu kandung</th><th>HP</th><th>Posyandu</th><th>Aksi</th></tr></thead><tbody>';
+    rows.forEach(function(x,i){h+='<tr><td>'+(i+1)+'</td><td><b>'+esc(x.nama)+'</b>'+(x.ub?' <span class="chip ub" title="Diubah petugas '+esc(x.ub)+'">Diubah petugas</span>':"")+(x.peng?'<small>Pengganti '+esc(x.sk)+'</small>':"")+'</td><td>'+esc(mask(x.nik))+'</td><td>'+esc(x.tempat)+', '+esc(tgl(x.tgl))+'</td><td>'+esc(x.kel)+'</td><td>'+esc(x.ibu)+'</td><td>'+esc(x.hp)+'</td><td>'+esc(x.p)+'<small>'+esc(x.k)+'</small></td><td><button class="bt-u" data-u="'+esc(x.resi)+'">Ubah data</button></td></tr>'});
     h+='</tbody></table></div><div class="cards">';
-    rows.forEach(function(x,i){h+='<div class="cd"><b>'+(i+1)+'. '+esc(x.nama)+'</b>'+(x.peng?' <span class="chip">Pengganti '+esc(x.sk)+'</span>':"")+'<div class="m">'+esc(x.p)+', '+esc(x.k)+'</div><div class="g"><span>NIK</span><div>'+esc(mask(x.nik))+'</div><span>Lahir</span><div>'+esc(x.tempat)+', '+esc(tgl(x.tgl))+' ('+esc(x.kel)+')</div><span>Ibu</span><div>'+esc(x.ibu)+'</div><span>HP</span><div>'+esc(x.hp)+'</div></div></div>'});
+    rows.forEach(function(x,i){h+='<div class="cd"><b>'+(i+1)+'. '+esc(x.nama)+'</b>'+(x.ub?' <span class="chip ub">Diubah petugas</span>':"")+(x.peng?' <span class="chip">Pengganti '+esc(x.sk)+'</span>':"")+'<div class="m">'+esc(x.p)+', '+esc(x.k)+'</div><div class="g"><span>NIK</span><div>'+esc(mask(x.nik))+'</div><span>Lahir</span><div>'+esc(x.tempat)+', '+esc(tgl(x.tgl))+' ('+esc(x.kel)+')</div><span>Ibu</span><div>'+esc(x.ibu)+'</div><span>HP</span><div>'+esc(x.hp)+'</div></div><button class="bt-u" data-u="'+esc(x.resi)+'">Ubah data</button></div>'});
     h+='</div>';
   }
   h+='<div class="foot">Menampilkan '+rows.length+' kader Posyandu '+esc(jenis)+'. File unduhan memuat semua yang sudah masuk (Balita dan Lansia).</div>';
@@ -128,6 +142,7 @@ function render(){
 }
 app.addEventListener("click",function(ev){
   var t=ev.target.closest("button");if(!t)return;
+  if(t.dataset.u){bukaUbah(t.dataset.u);return}
   if(t.dataset.j){jenis=t.dataset.j;fKel="";fPos="";render()}
   else if(t.id==="segar")segar();
   else if(t.id==="xls")unduhExcel();
@@ -206,6 +221,75 @@ function unduhGambar(){
       simpan(b,"Belum-mengisi-BPJS-"+tanggalFile()+".png");sibuk="";render()},"image/png");
   }catch(e){sibuk="Gambar belum bisa dibuat. Muat ulang halaman lalu coba lagi.";render();console.error(e)}
 }
+/* ---------- ubah data oleh petugas ---------- */
+var mdl=document.getElementById("mdl"),uRes="",uBusy=false;
+function nikInfo(n){
+  if(!/^\d{16}$/.test(n))return null;
+  var d=+n.slice(6,8),m=+n.slice(8,10),y=+n.slice(10,12),p=d>40;if(p)d-=40;
+  var yy=y>10?1900+y:2000+y,dt=new Date(yy,m-1,d);
+  if(m<1||m>12||d<1||dt.getMonth()!==m-1||dt.getDate()!==d)return {salah:true};
+  return {iso:yy+"-"+("0"+m).slice(-2)+"-"+("0"+d).slice(-2),kel:p?"P":"L"};
+}
+function bukaUbah(resi){
+  var x=R&&R.isi.filter(function(z){return z.resi===resi})[0];if(!x)return;
+  uRes=resi;uBusy=false;
+  mdl.innerHTML='<div class="box"><h2>Ubah data kader</h2><div class="sub">'+esc(x.sk)+' · Posyandu '+esc(x.p)+', '+esc(x.k)+' ('+esc(x.j)+')'+(x.peng?' · pengganti':'')+'</div>'+
+    '<label for="u_nama">Nama sesuai KTP</label><input class="in" id="u_nama" value="'+esc(x.nama)+'" autocomplete="off"><div class="er" id="e_nama"></div>'+
+    '<label for="u_nik">NIK (16 angka)</label><input class="in" id="u_nik" inputmode="numeric" maxlength="16" value="'+esc(x.nik)+'" autocomplete="off"><div class="er" id="e_nik"></div><div class="info" id="i_nik"></div>'+
+    '<div class="r2"><div><label for="u_tempat">Tempat lahir</label><input class="in" id="u_tempat" value="'+esc(x.tempat)+'" autocomplete="off"><div class="er" id="e_tempat"></div></div>'+
+    '<div><label for="u_tgl">Tanggal lahir</label><input class="in" id="u_tgl" type="date" min="1930-01-01" max="2012-12-31" value="'+esc(x.tgl)+'"><div class="er" id="e_tgl"></div></div></div>'+
+    '<label for="u_kel">Jenis kelamin</label><select class="in" id="u_kel"><option value="">Pilih…</option><option value="L"'+(x.kel==="L"?" selected":"")+'>Laki-laki</option><option value="P"'+(x.kel==="P"?" selected":"")+'>Perempuan</option></select><div class="er" id="e_kel"></div>'+
+    '<label for="u_ibu">Nama ibu kandung</label><input class="in" id="u_ibu" value="'+esc(x.ibu)+'" autocomplete="off"><div class="er" id="e_ibu"></div>'+
+    '<label for="u_hp">Nomor HP</label><input class="in" id="u_hp" inputmode="tel" value="'+esc(x.hp)+'" autocomplete="off"><div class="er" id="e_hp"></div>'+
+    '<div id="u_gal"></div><div class="aksi"><button class="btn o" id="u_batal" type="button">Batal</button><button class="btn" id="u_simpan" type="button">Simpan perubahan</button></div></div>';
+  mdl.classList.add("on");document.body.style.overflow="hidden";
+  var f=document.getElementById("u_nama");if(f)f.focus();
+}
+function tutupUbah(){mdl.classList.remove("on");mdl.innerHTML="";document.body.style.overflow="";uRes=""}
+function ubahNilai(){
+  function v(i){return document.getElementById(i).value}
+  return {nama:v("u_nama").replace(/\s+/g," ").trim(),nik:v("u_nik").replace(/\D/g,""),tempat:v("u_tempat").replace(/\s+/g," ").trim(),tgl:v("u_tgl"),kelamin:v("u_kel"),ibu:v("u_ibu").replace(/\s+/g," ").trim(),hp:v("u_hp").replace(/\D/g,"")};
+}
+function cekUbah(f){
+  var e={};
+  if(f.nama.length<3)e.nama="Nama belum diisi dengan benar.";
+  if(!/^\d{16}$/.test(f.nik))e.nik="NIK harus 16 angka.";else{var i=nikInfo(f.nik);if(i&&i.salah)e.nik="Tanggal di NIK ini tidak masuk akal. Periksa lagi."}
+  if(f.tempat.length<2)e.tempat="Tempat lahir belum diisi.";
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(f.tgl)||f.tgl<"1930-01-01"||f.tgl>"2012-12-31")e.tgl="Tanggal lahir belum benar.";
+  if(!f.kelamin)e.kel="Pilih jenis kelamin.";
+  if(f.ibu.length<3)e.ibu="Nama ibu kandung belum diisi.";
+  if(!/^0\d{9,13}$/.test(f.hp))e.hp="Nomor HP diawali 0, 10 sampai 14 angka.";
+  ["nama","nik","tempat","tgl","kel","ibu","hp"].forEach(function(k){var el=document.getElementById("e_"+k);if(el)el.textContent=e[k]||""});
+  return Object.keys(e).length===0;
+}
+function simpanUbah(){
+  if(uBusy||!uRes)return;
+  var f=ubahNilai(),gal=document.getElementById("u_gal");gal.innerHTML="";
+  if(!cekUbah(f))return;
+  var x=R.isi.filter(function(z){return z.resi===uRes})[0];
+  var sama=R.isi.filter(function(z){return z.resi!==uRes&&z.j===x.j&&z.nik===f.nik})[0];
+  if(sama){document.getElementById("e_nik").textContent="NIK ini sudah terdaftar atas nama "+sama.nama+".";return}
+  uBusy=true;var b=document.getElementById("u_simpan");b.disabled=true;b.textContent="Menyimpan…";
+  var resi=uRes;
+  fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({a:"ubah",k:KODE,resi:resi,nama:f.nama,nik:f.nik,tempat:f.tempat,tgl:f.tgl,kelamin:f.kelamin,ibu:f.ibu,hp:f.hp})})
+    .then(function(r){return r.json()}).then(function(r){
+      uBusy=false;
+      if(!r||!r.ok){b.disabled=false;b.textContent="Simpan perubahan";gal.innerHTML='<div class="gal">'+esc((r&&r.pesan)||"Belum berhasil disimpan. Coba lagi.")+'</div>';return}
+      x.nama=f.nama;x.nik=f.nik;x.tempat=f.tempat;x.tgl=f.tgl;x.kel=f.kelamin;x.ibu=f.ibu;x.hp=f.hp;x.ub=r.ub||"ya";
+      tutupUbah();kabar="Data "+f.nama+" sudah diubah";render();
+    }).catch(function(){uBusy=false;b.disabled=false;b.textContent="Simpan perubahan";gal.innerHTML='<div class="gal">Tidak bisa terhubung. Periksa sinyal, lalu coba lagi.</div>'});
+}
+mdl.addEventListener("click",function(ev){
+  if(ev.target===mdl&&!uBusy){tutupUbah();return}
+  var t=ev.target.closest("button");if(!t)return;
+  if(t.id==="u_batal"&&!uBusy)tutupUbah();else if(t.id==="u_simpan")simpanUbah();
+});
+mdl.addEventListener("input",function(ev){
+  if(ev.target.id!=="u_nik")return;
+  var n=ev.target.value.replace(/\D/g,""),i=nikInfo(n),inf=document.getElementById("i_nik");
+  if(i&&!i.salah){document.getElementById("u_tgl").value=i.iso;document.getElementById("u_kel").value=i.kel;inf.textContent="Tanggal lahir dan jenis kelamin diisi dari NIK. Ubah bila berbeda."}else inf.textContent="";
+});
+document.addEventListener("keydown",function(ev){if(ev.key==="Escape"&&mdl.classList.contains("on")&&!uBusy)tutupUbah()});
 muat();
 })();
 </script>
