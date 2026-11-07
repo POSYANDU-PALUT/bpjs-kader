@@ -136,7 +136,7 @@ function vHome(){
 }
 function vJenis(){
   function o(k,ic,t,s){return '<div class="opt'+(S.jenis===k?" on":"")+'" data-jenis="'+k+'" role="button" tabindex="0"><div class="rd"></div><div style="flex:1"><div class="ic">'+ic+'</div><b>'+t+'</b><small>'+s+'</small></div></div>'}
-  return bar("Pilih jenis posyandu","Langkah 1 dari 4",1,true)+'<div class="body"><p class="mut" style="margin-bottom:14px">Anda kader di posyandu yang mana?</p>'+o("Balita","👶","Posyandu Balita","Kader posyandu untuk bayi dan anak balita")+o("Lansia","👵","Posyandu Lansia","Kader posyandu untuk lanjut usia")+'<div class="note" style="margin-top:6px"><span>💡</span><span>Bertugas di keduanya? Isi satu dulu sampai selesai, lalu mulai lagi untuk yang satunya.</span></div></div>'+foot('<button class="btn" data-act="lanjut"'+(S.jenis?"":" disabled")+'>Lanjut ›</button>');
+  return bar("Pilih jenis posyandu","Langkah 1 dari 4",1,true)+'<div class="body"><p class="mut" style="margin-bottom:14px">Anda kader di posyandu yang mana?</p>'+o("Balita","👶","Posyandu Balita","Kader posyandu untuk bayi dan anak balita")+o("Lansia","👵","Posyandu Lansia","Kader posyandu untuk lanjut usia")+'</div>'+foot('<button class="btn" data-act="lanjut"'+(S.jenis?"":" disabled")+'>Lanjut ›</button>');
 }
 function vNama(){
   var dj=dataJenis(),kels=uniq(dj.map(function(x){return x.k}));
