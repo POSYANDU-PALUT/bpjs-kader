@@ -128,7 +128,7 @@ function vHome(){
   var lok=bacaLokal();
   function r(n,t,s){return '<div class="row" style="padding:9px 2px;cursor:default"><div class="num" style="width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--g2);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none">'+n+'</div><div><b>'+t+'</b><div class="mut" style="font-size:12.5px">'+s+'</div></div></div>'}
   return '<div class="top"><div class="l"><img src="logo.png" alt=""><span>Kecamatan Palu Utara</span></div><h1>Pendaftaran<br><em>BPJS Ketenagakerjaan</em></h1><p>Untuk kader Posyandu Kecamatan Palu Utara. Lengkapi data diri dalam 4 langkah, sekitar 2 menit.</p></div>'+
-  '<div class="body"><div class="dash">Ini <u>bukan</u> aplikasi laporan bulanan. Ini hanya pendaftaran BPJS Ketenagakerjaan.</div>'+
+  '<div class="body">'+
   '<div class="card" style="padding:4px 14px">'+r(1,"Pilih jenis posyandu","Balita atau Lansia")+r(2,"Pilih nama Anda","Dari daftar SK kader")+r(3,"Isi data diri","NIK, tempat dan tanggal lahir, nama ibu, HP")+r(4,"Periksa lalu kirim","Bisa diperbaiki bila ada yang salah")+'</div>'+
   '<div class="note"><span>🔒</span><span>Data pribadi Anda hanya dipakai untuk pendaftaran BPJS Ketenagakerjaan kader Posyandu Kecamatan Palu Utara dan tidak dibagikan ke pihak lain.</span></div></div>'+
   foot((loadErr?'<div class="err">'+esc(loadErr)+'</div><button class="btn soft" data-act="muat">Coba lagi</button>':!D?'<div class="load" style="padding:10px"><div class="spin"></div>Memuat daftar nama…</div>':'<button class="btn soft" data-act="mulai">Mulai mengisi &nbsp;›</button>')+
