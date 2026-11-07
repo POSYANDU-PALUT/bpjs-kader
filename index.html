@@ -93,11 +93,20 @@ function tanya(body,ms){
   return fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body),signal:c.signal,redirect:"follow"})
     .then(function(r){clearTimeout(t);return r.json()}).catch(function(e){clearTimeout(t);throw e});
 }
+var KD="bk-daftar-v1";
 function muat(){
-  loadErr="";D=null;render();
+  loadErr="";
+  var ada=false;
+  try{var c=JSON.parse(localStorage.getItem(KD)||"null");if(c&&Array.isArray(c.d)&&c.d.length&&Date.now()-c.t<7*864e5){D=c.d;ada=true}}catch(e){}
+  if(!ada)D=null;
+  render();
   tanya({a:"daftar"}).then(function(r){
-    if(!r||!r.ok)throw new Error("x");D=r.daftar;render();
-  }).catch(function(e){loadErr=e&&e.message==="api"?"Aplikasi belum disambungkan ke server. Hubungi petugas kecamatan.":"Tidak bisa terhubung. Periksa sinyal internet, lalu coba lagi.";render()});
+    if(!r||!r.ok)throw new Error("x");
+    D=r.daftar;try{localStorage.setItem(KD,JSON.stringify({t:Date.now(),d:D}))}catch(e){}
+    if(!ada||S.step<=1)render();
+  }).catch(function(e){
+    if(ada)return;
+    loadErr=e&&e.message==="api"?"Aplikasi belum disambungkan ke server. Hubungi petugas kecamatan.":"Tidak bisa terhubung. Periksa sinyal internet, lalu coba lagi.";render()});
 }
 
 /* ---------- NIK ---------- */
