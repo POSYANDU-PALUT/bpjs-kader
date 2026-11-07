@@ -1,5 +1,5 @@
 /* Alamat server (Google Apps Script). Diisi setelah penerapan web selesai. */
-window.BK = { api: "" };
+window.BK = { api: "https://script.google.com/macros/s/AKfycbwfURAot8XS8MG-Entx_O6Q1AzQNVWSThthc5dNvIZMa6UuPlaGOcMlUQ6C459rnt7t-A/exec" };
 (function () {
   /* Hanya untuk uji di komputer sendiri: ?api=... dipakai bila alamat halaman localhost */
   try {
