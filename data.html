@@ -104,7 +104,7 @@ function render(){
   var kels=uniq(dj.map(function(d){return d.k})),poss=uniq(dj.filter(function(d){return !fKel||d.k===fKel}).map(function(d){return d.p}));
   var rows=baris(jenis);
   var h='<div class="head"><img src="logo.png" alt=""><div><h1>Data BPJS Ketenagakerjaan</h1><small>Kader Posyandu · Kecamatan Palu Utara</small></div></div>';
-  h+='<div class="kpis"><div class="k ok"><small>Sudah mengisi</small><b>'+sudah+' <span>dari '+tot+'</span></b></div><div class="k no"><small>Belum mengisi</small><b>'+belum+'</b></div><div class="sp"></div><div class="btns"><button class="btn o" id="segar"'+(muat_?" disabled":"")+'>⟳ '+(muat_?"Memperbarui…":"Perbarui sekarang")+'</button><button class="btn o" id="pdf"'+(sibuk?" disabled":"")+'>⬇ Unduh PDF</button><button class="btn" id="xls"'+(sibuk?" disabled":"")+'>⬇ Unduh Excel</button></div></div>';
+  h+='<div class="kpis"><div class="k ok"><small>Sudah mengisi</small><b>'+sudah+' <span>dari '+tot+'</span></b></div><div class="k no"><small>Belum mengisi</small><b>'+belum+'</b></div><div class="sp"></div><div class="btns"><button class="btn o" id="segar"'+(muat_?" disabled":"")+'>⟳ '+(muat_?"Memperbarui…":"Perbarui sekarang")+'</button><button class="btn o" id="gbr"'+(sibuk?" disabled":"")+'>🖼 Unduh belum mengisi (gambar)</button><button class="btn" id="xls"'+(sibuk?" disabled":"")+'>⬇ Unduh Excel</button></div></div>';
   if(sibuk)h+='<div class="foot" role="status">'+esc(sibuk)+'</div>';
   h+='<div class="foot" role="status">'+(terakhir?'Terakhir diperbarui: '+esc(terakhir):'')+(kabar?' · <b style="color:var(--g2)">'+esc(kabar)+'</b>':'')+'</div>';
   h+='<div class="tools"><div class="seg"><button data-j="Balita" class="'+(jenis==="Balita"?"on":"")+'">Posyandu Balita</button><button data-j="Lansia" class="'+(jenis==="Lansia"?"on":"")+'">Posyandu Lansia</button></div>';
@@ -131,7 +131,7 @@ app.addEventListener("click",function(ev){
   if(t.dataset.j){jenis=t.dataset.j;fKel="";fPos="";render()}
   else if(t.id==="segar")segar();
   else if(t.id==="xls")unduhExcel();
-  else if(t.id==="pdf")unduhPdf();
+  else if(t.id==="gbr")unduhGambar();
 });
 app.addEventListener("change",function(ev){var t=ev.target;if(t.id==="fkel"){fKel=t.value;fPos="";render()}else if(t.id==="fpos"){fPos=t.value;render()}});
 app.addEventListener("input",function(ev){if(ev.target.id==="cari"){cari=ev.target.value;render()}});
@@ -165,25 +165,38 @@ function unduhExcel(){
     sibuk="";render();
   }).catch(function(e){sibuk="Excel belum bisa dibuat. Muat ulang halaman lalu coba lagi.";render();console.error(e)});
 }
-function unduhPdf(){
-  sibuk="Menyiapkan file PDF…";render();
-  Promise.all([window.jspdf?0:skrip("lib/jspdf.umd.min.js")]).then(function(){return window.jspdf&&window.jspdf.jsPDF&&window.jspdf.jsPDF.API&&window.jspdf.jsPDF.API.autoTable?0:skrip("lib/jspdf.plugin.autotable.min.js")}).then(function(){
-    var doc=new window.jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"}),first=true;
-    [["Balita","Posyandu Balita"],["Lansia","Posyandu Lansia"]].forEach(function(p){
-      var list=semua(p[0]);if(!list.length)return;
-      if(!first)doc.addPage();first=false;
-      doc.setFont("helvetica","bold");doc.setFontSize(13);doc.text("Data Pendaftaran BPJS Ketenagakerjaan Kader "+p[1],14,14);
-      doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text("Kecamatan Palu Utara · Dicetak "+tglX(tanggalFile().split("-").reverse().join("-").split("-").reverse().join("-"))+" · "+list.length+" kader",14,19);
-      doc.autoTable({startY:23,margin:{left:14,right:14,bottom:14},theme:"grid",styles:{fontSize:8,cellPadding:1.6,lineColor:[225,205,215],lineWidth:.2},headStyles:{fillColor:[179,23,95],textColor:255,fontStyle:"bold"},alternateRowStyles:{fillColor:[252,244,248]},
-        head:[["No","Nama","NIK","Tempat, tgl lahir","L/P","Ibu kandung","HP","Posyandu","Kelurahan"]],
-        body:list.map(function(x,i){return [i+1,x.nama+(x.peng?" (pengganti "+x.sk+")":""),x.nik,x.tempat+", "+tglX(x.tgl),x.kel,x.ibu,x.hp,x.p,x.k]}),
-        columnStyles:{0:{cellWidth:9},2:{cellWidth:35},4:{cellWidth:9},6:{cellWidth:27}},
-        didDrawPage:function(){var n=doc.internal.getNumberOfPages();doc.setFontSize(8);doc.setTextColor(120);doc.text("Rahasia: berisi data pribadi. Halaman "+doc.internal.getCurrentPageInfo().pageNumber,14,doc.internal.pageSize.getHeight()-6);doc.setTextColor(0)}});
+function unduhGambar(){
+  sibuk="Menyiapkan gambar…";render();
+  try{
+    var tg=new Date(),bln=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],tgl_=tg.getDate()+" "+bln[tg.getMonth()]+" "+tg.getFullYear(),ada=0,hasil=[];
+    ["Balita","Lansia"].forEach(function(j){
+      var all=R.daftar.filter(function(x){return x.j===j}),bl=all.filter(function(x){return x.s==="kosong"});
+      if(!bl.length)return;
+      var g={},ko=[];bl.forEach(function(x){if(!g[x.k]){g[x.k]={};ko.push(x.k)}if(!g[x.k][x.p])g[x.k][x.p]=[];g[x.k][x.p].push(x.n)});
+      var W=900,S=2,y=0,L=[];
+      L.push(["judul","Belum Mengisi Data BPJS Ketenagakerjaan",64]);
+      L.push(["sub","Posyandu "+j+" · Kecamatan Palu Utara · "+tgl_+" · "+bl.length+" dari "+all.length+" belum mengisi",36]);
+      var no=0;
+      ko.forEach(function(k){L.push(["kel",k,58]);Object.keys(g[k]).forEach(function(p){L.push(["pos",p,44]);g[k][p].forEach(function(n){no++;L.push(["nama",no+". "+n,38])})})});
+      L.push(["kaki","Mohon segera mengisi lewat tautan pendaftaran yang dibagikan petugas.",70]);
+      var H=40;L.forEach(function(r){H+=r[2]});H+=20;
+      var c=document.createElement("canvas");c.width=W*S;c.height=H*S;var x=c.getContext("2d");x.scale(S,S);
+      x.fillStyle="#fff";x.fillRect(0,0,W,H);
+      var F='system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';y=30;
+      L.forEach(function(r){var t=r[0],s=r[1],h=r[2];
+        if(t==="judul"){x.fillStyle="#b3175f";x.font="800 30px "+F;x.fillText(s,36,y+34)}
+        else if(t==="sub"){x.fillStyle="#7a5e6b";x.font="500 18px "+F;x.fillText(s,36,y+22)}
+        else if(t==="kel"){x.fillStyle="#fde1ee";x.fillRect(36,y+14,W-72,38);x.fillStyle="#b3175f";x.font="800 21px "+F;x.fillText(s,48,y+41)}
+        else if(t==="pos"){x.fillStyle="#2a1019";x.font="800 20px "+F;x.fillText(s,48,y+30)}
+        else if(t==="nama"){x.fillStyle="#2a1019";x.font="500 19px "+F;x.fillText(s,68,y+25);x.strokeStyle="#eee3e9";x.lineWidth=1;x.setLineDash([4,4]);x.beginPath();x.moveTo(68,y+34.5);x.lineTo(W-36,y+34.5);x.stroke();x.setLineDash([])}
+        else{x.fillStyle="#7a5e6b";x.font="500 16px "+F;x.fillText(s,36,y+40);x.strokeStyle="#eee3e9";x.beginPath();x.moveTo(36,y+14);x.lineTo(W-36,y+14);x.stroke();x.fillText("Hanya nama dan posyandu, tanpa data pribadi.",36,y+62)}
+        y+=h});
+      hasil.push([c,j]);
     });
-    if(first){doc.setFontSize(12);doc.text("Belum ada data yang masuk.",14,20)}
-    simpan(doc.output("blob"),"BPJS-Ketenagakerjaan-Kader-Posyandu-"+tanggalFile()+".pdf");
-    sibuk="";render();
-  }).catch(function(e){sibuk="PDF belum bisa dibuat. Muat ulang halaman lalu coba lagi.";render();console.error(e)});
+    if(!hasil.length){sibuk="Semua kader sudah mengisi, tidak ada yang perlu diunduh.";render();return}
+    var i=0;(function lanjut(){if(i>=hasil.length){sibuk="";render();return}
+      var h=hasil[i++];h[0].toBlob(function(b){simpan(b,"Belum-mengisi-BPJS-Posyandu-"+h[1]+"-"+tanggalFile()+".png");setTimeout(lanjut,900)},"image/png")})();
+  }catch(e){sibuk="Gambar belum bisa dibuat. Muat ulang halaman lalu coba lagi.";render();console.error(e)}
 }
 muat();
 })();
